@@ -194,10 +194,12 @@ export class InstagramService {
    */
   async downloadWithYtDlp(url: string): Promise<InstagramPostResult> {
     this.logger.log(`yt-dlp orqali yuklashga urinilmoqda...`);
-    const ytdlpPath = path.join(process.cwd(), 'yt-dlp.exe');
+    const os = require('os');
+    const isWindows = os.platform() === 'win32';
+    const ytdlpPath = path.join(process.cwd(), isWindows ? 'yt-dlp.exe' : 'yt-dlp');
     
     if (!fs.existsSync(ytdlpPath)) {
-       throw new Error("yt-dlp.exe topilmadi. Ulanish qoldirildi.");
+       throw new Error(`yt-dlp dasturi topilmadi (${ytdlpPath}). Ulanish qoldirildi.`);
     }
 
     let cookieArg = '';
